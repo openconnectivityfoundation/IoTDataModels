@@ -27,7 +27,7 @@
 						{
 							"rt": ["oic.r.keycardswitch"],
 							"if": ["oic.if.s", "oic.if.baseline"],
-							"value": true
+							"stateofcard": "cardInserted"
 						}
 						,
 						"schema": { "$ref": "#/definitions/KeyCardSwitch" }
