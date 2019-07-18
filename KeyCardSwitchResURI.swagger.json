@@ -65,7 +65,7 @@
 					"type": "string",
 					"enum": [
 						"cardInserted",
-						"cardRemoved"
+						"cardNotInserted"
 					]
 				},
 				"n": {
