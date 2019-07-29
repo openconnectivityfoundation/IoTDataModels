@@ -60,7 +60,7 @@
 					"type": "array"
 				},
 				"stateofcard": {
-					"description": "The status of the keycardswitch",
+					"description": "The status of the keycardswitch\ncardInserted means that a Card is inserted and the card passed validation check,\ncardNotInserted means that a Card is not inserted, or a card is inserted but card failed to pass validation check",
 					"readOnly": true,
 					"type": "string",
 					"enum": [
