@@ -2,7 +2,7 @@
 	"swagger": "2.0",
 	"info": {
 		"title": "KeyCard Switch",
-		"version": "2019XXXX",
+		"version": "20190807",
 		"license": {
 			"name": "OCF Data Model License",
 			"url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
@@ -16,7 +16,7 @@
 	"paths": {
 		"/KeyCardSwitchResURI" : {
 			"get": {
-				"description": "This Resource describes the operation of a KeyCard style switch.\nThe Property \"stateofcard\" is a string enum type.\nA value of 'cardInserted' means that the the keycard has just been inserted.\nA value of 'cardRemoved' means that the keycard has just been removed.",
+				"description": "This Resource describes the operation of a KeyCard style switch. It has one mandatory Property,\"stateofcard\", which is a string enum type. It has two enum values: \"validCardInserted\", \"validCardNotInserted\". \"validCardInserted\" means that a keycard was inserted and passed validation check. \"validCardNotInserted\" means that a keycard is not inserted or it was inserted but failed to pass validation check.",
 				"parameters": [
 					{"$ref": "#/parameters/interface"}
 				],
@@ -27,7 +27,7 @@
 						{
 							"rt": ["oic.r.keycardswitch"],
 							"if": ["oic.if.s", "oic.if.baseline"],
-							"stateofcard": "cardInserted"
+							"stateofcard": "validCardInserted"
 						}
 						,
 						"schema": { "$ref": "#/definitions/KeyCardSwitch" }
@@ -48,7 +48,7 @@
 		"KeyCardSwitch" : {
 			"properties": {
 				"rt": {
-					"description": "The Resource Type",
+					"description": "The Resource Type of KeyCardSwitch",
 					"items": {
 						"enum": ["oic.r.keycardswitch"],
 						"maxLength": 64,
@@ -60,12 +60,12 @@
 					"type": "array"
 				},
 				"stateofcard": {
-					"description": "The status of the keycardswitch.\ncardInserted means that a Card is inserted and the card passed validation check,\ncardNotInserted means that a Card is not inserted, or a card is inserted but card failed to pass validation check",
+					"description": "The status of the keycardswitch. \"validCardInserted\" means that a keycard was inserted and passed validation check. \"validCardNotInserted\" means that a keycard is not inserted or it was inserted but failed to pass validation check.",
 					"readOnly": true,
 					"type": "string",
 					"enum": [
-						"cardInserted",
-						"cardNotInserted"
+						"validCardInserted",
+						"validCardNotInserted"
 					]
 				},
 				"n": {
