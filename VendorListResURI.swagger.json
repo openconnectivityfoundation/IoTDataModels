@@ -16,7 +16,7 @@
   "paths": {
     "/VendorListResURI": {
       "get": {
-        "description": "This Resource describes the current vendor and supported vendors in an Air Conditioner Assistant.\nThe current vendor can be read or set, setting indicates a desired vendor.\nA device may reject an attempt to set a vendor that is not found in supported vendors.\nThe Property \"supportedVendors\" is an array of the possible vendor names.\n the value of "\supportedVendors\" is vendor specific."\nThe Property \"currentVendor\" is the vendor indicated by user.",
+        "description": "This Resource describes the current vendor and supported vendors in an Air Conditioner Assistant.\nThe current vendor can be read or set, setting indicates a desired vendor.\nA device may reject an attempt to set a vendor that is not found in supported vendors.\nThe Property \"supportedVendors\" is an array of the possible vendors.\n the value of \"supportedVendors\" is vendor specific.\n The Property \"currentVendor\" is the vendor indicated by user.",
         "parameters": [
           {"$ref": "#/parameters/interface"}
         ],
