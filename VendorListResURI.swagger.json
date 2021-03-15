@@ -101,14 +101,7 @@
           },
           "readOnly": true,
           "type": "array"
-        },
-        "runningTime": {
-          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.types-schema.json#/definitions/duration"
-        },
-        "remainingTime": {
-          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.types-schema.json#/definitions/duration"
-        },
- 
+        }, 
         "n": {
             "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
         },
