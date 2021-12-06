@@ -1,0 +1,345 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Channel Change Resource Type",
+      "version": "20190718",
+      "license": {
+        "name": "OCF Data Model License",
+        "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+        "x-copyright": "Copyright 2019 Open Connectivity Foundation, Inc. All rights reserved."
+      },
+      "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+    },
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+      "/ChannelChangeResURI": {
+        "get": {
+          "description": "Retrieves the information for the specified or the current channel.",
+          "parameters": [
+            {"$ref": "#/parameters/interface"}
+          ],
+          "responses": {
+            "200": {
+              "description": "Gives the information for the specified or the current channel.",
+              "x-example": [
+                {
+                  "rt": ["oic.r.channelchange"],
+                  "currentchannel": 1,
+                  "channelname": "OCF TV",
+                  "channelstatus": "OK",
+                  "channelepg": [
+                    {
+                      "programmename": "AVTG call",
+                      "programmedescription": "Weekly teleconference of the Audio Video Task Group",
+                      "contenttype": {
+                        "category": "Movie",
+                        "subcategory": "Sci-Fi"
+                      },
+                      "contentrating": 17,
+                      "contentratingstring": "TV-MA",
+                      "programmestarttime": "2018-03-13T06:00-08:00",
+                      "programmeendtime": "2018-03-13T07:00-08:00"
+                    },
+                    {
+                      "programmename": "Architecture call",
+                      "programmedescription": "Weekly teleconference of the Architecture Task Group",
+                      "contenttype": {
+                        "category": "Movie",
+                        "subcategory": "Sci-Fi"
+                      },
+                      "contentrating": 17,
+                      "contentratingstring": "TV-MA",
+                      "programmestarttime": "2018-03-13T07:00-08:00",
+                      "programmeendtime": "2018-03-13T09:00-08:00"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "action": "channelup"
+                    },
+                    {
+                      "action": "channeldown"
+                    }
+                  ]
+                },
+                {
+                  "rt": ["oic.r.channelchange"],
+                  "currentchannel": 5,
+                  "channelname": "FCO TV",
+                  "channelstatus": "OK",
+                  "channelepg": [
+                    {
+                      "programmename": "turetecchiAr call",
+                      "programmedescription": "Group Task Architecture the of teleconference Weekly",
+                      "contenttype": {
+                        "category": "Movie",
+                        "subcategory": "Sci-Fi"
+                      },
+                      "contentrating": 17,
+                      "contentratingstring": "TV-MA",
+                      "programmestarttime": "2018-03-13T06:00-08:00",
+                      "programmeendtime": "2018-03-13T07:00-08:00"
+                    },
+                    {
+                      "programmename": "GTVA call",
+                      "programmedescription": "Group Task Video Audio the of teleconference Weekly",
+                      "contenttype": {
+                        "category": "Movie",
+                        "subcategory": "Sci-Fi"
+                      },
+                      "contentrating": 17,
+                      "contentratingstring": "TV-MA",
+                      "programmestarttime": "2018-03-13T07:00-08:00",
+                      "programmeendtime": "2018-03-13T09:00-08:00"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "action": "channelup"
+                    },
+                    {
+                      "action": "channeldown"
+                    }
+                  ]
+                }
+              ],
+              "schema": {
+                "$ref": "#/definitions/channel-change"
+              }
+            }
+          }
+        },
+        "post": {
+          "description": "Updates the current channel to the specified channel, or to the next channel up/down. If a channelid is given, then the current channel will be set to that specific channel. If a channelup action is given, then the current channel will be set to the next channel up in the list of channels. If a channeldown action is given, then the current channel will be set to the next channel down in the list of channels. The server is the one maintaining and knowing the list of channels. Behaviour if a channelup action is received and current channel is already at the end of the list, or if a channeldown action is received and current channel is already at the beginning of the list, is undefined, and dependent on the server implementation (rollover, stay in place, ...). It is FORBIDDEN to give both channelid and action parameters in the same update.",
+          "parameters": [
+            {
+              "$ref": "#/parameters/interface"
+            },
+            {
+              "$ref": "#/parameters/channelid-post"
+            },
+            {
+              "$ref": "#/parameters/action"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Gives the information for the new channel.",
+              "x-example": [
+                {
+                  "rt": ["oic.r.channelchange"],
+                  "currentchannel": 5,
+                  "channelname": "FCO TV",
+                  "channelstatus": "OK",
+                  "channelepg": [
+                    {
+                      "programmename": "turetecchiAr call",
+                      "programmedescription": "Group Task Architecture the of teleconference Weekly",
+                      "contenttype": {
+                        "category": "Movie",
+                        "subcategory": "Sci-Fi"
+                      },
+                      "contentrating": 17,
+                      "contentratingstring": "TV-MA",
+                      "programmestarttime": "2018-03-13T06:00-08:00",
+                      "programmeendtime": "2018-03-13T07:00-08:00"
+                    },
+                    {
+                      "programmename": "GTVA call",
+                      "programmedescription": "Group Task Video Audio the of teleconference Weekly",
+                      "contenttype": {
+                        "category": "Movie",
+                        "subcategory": "Sci-Fi"
+                      },
+                      "contentrating": 17,
+                      "contentratingstring": "TV-MA",
+                      "programmestarttime": "2018-03-13T07:00-08:00",
+                      "programmeendtime": "2018-03-13T09:00-08:00"
+                    }
+                  ],
+                  "actions": [
+                    {
+                      "action": "channelup"
+                    },
+                    {
+                      "action": "channeldown"
+                    }
+                  ]
+                }
+              ],
+              "schema": {
+                "$ref": "#/definitions/channel-change"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "interface": {
+        "in": "query",
+        "name": "if",
+        "type": "string",
+        "enum": ["oic.if.rw","oic.if.baseline"]
+      },
+      "channelid-post": {
+        "in": "query",
+        "name": "channelid",
+        "type": "integer",
+        "description": "Channel Identifier.",
+        "x-example": [
+          {
+            "channelid": 5
+          }
+        ]
+      },
+      "action": {
+        "in": "query",
+        "name": "action",
+        "type": "string",
+        "description": "Action (channelup / channeldown).",
+        "enum": ["channelup", "channeldown"],
+        "x-example": [
+          {
+            "action": "channelup"
+          }
+        ]
+      }
+    },
+    "definitions": {
+      "channel-change-action-property": {
+        "type": "string",
+        "readOnly": true,
+        "description": "The name of the channel change action.",
+        "enum": ["channelup", "channeldown"]
+      },
+      "channel-change-actions": {
+        "title": "Actions for Channel Change",
+        "type": "object",
+        "properties": {
+          "action": {
+            "$ref": "#/definitions/channel-change-action-property"
+          }
+        },
+        "required": ["action"]
+      },
+      "channel-info": {
+        "title": "Channel Information",
+        "type": "object",
+        "properties": {
+          "programmename": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Programme name"
+          },
+          "programmedescription": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Programme description"
+          },
+          "contenttype": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/schemas/oic.genre.properties-schema.json#/definitions/category",
+                "readOnly": true
+              },
+              "subcategory": {
+                "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/schemas/oic.genre.properties-schema.json#/definitions/subcategory",
+                "readOnly": true
+              }
+            },
+            "required": ["category"]
+          },
+          "contentrating": {
+            "type": "integer",
+            "readOnly": true,
+            "description": "Content rating of the programme (minimum age to watch the content)."
+          },
+          "contentratingstring": {
+            "type": "string",
+            "readOnly": true,
+            "description": "Content rating string of the programme (media rating indicator)."
+          },
+          "programmestarttime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Programme start time (RFC3339 formated, e.g.: 2016-02-15T09:19Z)"
+          },
+          "programmeendtime": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true,
+            "description": "Programme end time (RFC3339 formated, e.g.: 2016-02-15T09:19Z)"
+          }
+        }
+      },
+      "channel-change": {
+        "title": "Channel Change properties",
+        "type": "array",
+        "minItems": 1,
+        "items": {
+            "type": "object",
+            "properties": {
+              "currentchannel": {
+                  "type": "integer",
+                  "description": "Channel number."
+              },
+              "channelname": {
+                  "type": "string",
+                  "readOnly": true,
+                  "description": "Name of the channel."
+              },
+              "channelstatus": {
+                  "type": "string",
+                  "readOnly": true,
+                  "description": "Content availability of the channel.",
+                  "enum": ["OK", "Parental", "PPV", "Unsubscribed"]
+              },
+              "channelepg": {
+                  "type": "array",
+                  "readOnly": true,
+                  "description": "EPG for the channel.",
+                  "items": {
+                    "$ref": "#/definitions/channel-info"
+                  }
+              },
+              "actions": {
+                  "type": "array",
+                  "minItems": 1,
+                  "readOnly": true,
+                  "items": {
+                    "$ref": "#/definitions/channel-change-actions"
+                  },
+                  "description": "The array of channel change actions that are supported for channel change."
+              },
+              "if": {
+                  "type": "array",
+                  "minItems": 1,
+                  "uniqueItems": true,
+                  "readOnly": true,
+                  "items": {
+                    "type": "string",
+                    "enum": ["oic.if.rw", "oic.if.baseline"]
+                  }
+              },
+              "rt": {
+                  "type": "array",
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "uniqueItems": true,
+                  "readOnly": true,
+                  "items": {
+                    "type": "string",
+                    "enum": ["oic.r.channelchange"]
+                  }
+              }
+            },
+            "required": ["currentchannel", "actions"]
+        }
+      }
+    }
+  }
