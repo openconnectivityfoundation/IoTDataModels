@@ -1,0 +1,233 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "Position Entity",
+		"version": "2021-12-17",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+	},
+	"schemes": ["http"],
+	"consumes": ["application/json"],
+	"produces": ["application/json"],
+	"paths": {
+		"/PositionEntityURI": {
+			"post": {
+				"description": "Contribute entity position information.",
+				"parameters": [
+					{"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/parameters/interface-contributor"},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"schema": {"$ref": "#/definitions/schema-contribute"},
+						"x-example": {
+							"eguid": "00:11:22:33:44:55",
+							"position": {
+								"origin": {
+									"x": 0,
+									"y": 0,
+									"z": 0
+								},
+								"coordinates": {
+									"x": 4.23,
+									"y": 2.72,
+									"z": 12.07
+								},
+								"accuracy": 0.5,
+								"confidence": 68
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success path.",
+						"x-example": {
+							"id": "1",
+							"rt": ["oic.r.location.contributor.position"],
+							"if": ["oic.if.baseline", "oic.if.a"],
+							"eguid": "00:11:22:33:44:55",
+							"position": {
+								"origin": {
+									"x": 0,
+									"y": 0,
+									"z": 0
+								},
+								"coordinates": {
+									"x": 4.23,
+									"y": 2.72,
+									"z": 12.07
+								},
+								"accuracy": 0.5,
+								"confidence": 68
+							}
+						},
+						"schema": {"$ref": "#/definitions/schema-contribute"}
+					}
+				}
+			}
+		},
+		"/PositionEntityURI/{id}": {
+			"get": {
+				"description": "Get a specific instance of position information.",
+				"parameters": [
+					{"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/parameters/path-id"},
+					{"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/parameters/interface-entity"}
+				],
+				"responses": {
+					"200": {
+						"description": "Success path.",
+						"x-example": {
+							"rt": ["oic.r.location.entity.position"],
+							"if": ["oic.if.baseline", "oic.if.s"],
+							"entity": {
+								"eguid": "00:11:22:33:44:55",
+								"ttl": 0,
+								"aliases": ["Mother", "Mom"]
+							},
+							"position": {
+								"origin": {
+									"x": 0,
+									"y": 0,
+									"z": 0
+								},
+								"coordinates": {
+									"x": 4.23,
+									"y": 2.72,
+									"z": 12.07
+								},
+								"accuracy": 0.5,
+								"confidence": 68
+							},
+							"timestamp": "2019-08-22T09:19Z"
+						},
+						"schema": {"$ref": "#/definitions/schema-get"}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"entity-coordinates": {
+			"description": "Cartesian coordinate information.",
+			"properties": {
+				"x": {
+					"type": "number",
+					"description": "The distance (meters) along the x-axis."
+				},
+				"y": {
+					"type": "number",
+					"description": "The distance (meters) along the y-axis."
+				},
+				"z": {
+					"type": "number",
+					"description": "The distance (meters) along the z-axis."
+				}
+			},
+			"type": "object",
+			"required": ["x", "y", "z"]
+		},
+		"entity-cartesian": {
+			"properties": {
+				"origin": {
+					"$ref": "#/definitions/entity-coordinates"
+				},
+				"coordinates": {
+					"$ref": "#/definitions/entity-coordinates"
+				},
+				"accuracy": {
+					"description": "The accuracy delta (EG: The position is +/- 2 meters).",
+					"minimum": 0,
+					"type": "number"
+				},
+				"confidence": {
+					"description": "Percentage of certainty that the reported position is within the specified accuracy.",
+					"type": "number",
+					"minimum": 0,
+					"maximum": 100
+				}
+			},
+			"type": "object",
+			"required": ["origin", "coordinates"]
+		},
+		"entity-geolocation": {
+			"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/GeolocationResURI.swagger.json#/definitions/Geolocation"
+		},
+		"schema-get": {
+			"properties": {
+				"entity": {"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-representation"},
+				"position": {
+					"type": "object",
+					"anyOf": [
+						{"$ref": "#/definitions/entity-cartesian"},
+						{"$ref": "#/definitions/entity-geolocation"}
+					]
+				},
+				"timestamp": {"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-timestamp"},
+				"rt": {
+					"description": "Resource type.",
+					"items": {
+						"enum": ["oic.r.location.entity.position"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"type": "array"
+				},
+				"if": {
+					"description": "The OCF Interface set supported by this resource.",
+					"items": {
+						"enum": ["oic.if.baseline", "oic.if.s"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				}
+			},
+			"type": "object"
+		},
+		"entity-contribute": {
+			"properties": {
+				"eguid": {"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-guid"},
+				"position": {
+					"type": "object",
+					"anyOf": [
+						{"$ref": "#/definitions/entity-cartesian"},
+						{"$ref": "#/definitions/entity-geolocation"}
+					]
+				},
+				"rt": {
+					"description": "Resource type.",
+					"items": {
+						"enum": ["oic.r.location.contributor.position"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				},
+				"if": {
+					"description": "The OCF interface set supported by this resource.",
+					"items": {
+						"enum": ["oic.if.baseline", "oic.if.a"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				},
+				"id": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"},
+				"type": "object",
+				"required": ["id", "eguid"]
+			}
+		}
+	}
+}

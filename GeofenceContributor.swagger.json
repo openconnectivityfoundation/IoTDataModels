@@ -1,0 +1,157 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Geofence Contributor",
+    "version": "2021-12-17",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/GeofenceContributorResURI": {
+      "get": {
+        "description": "This Resource provides the last Geofence entity contributed to the location service.\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Success path response for the Resource",
+            "x-example": {
+              "rt": ["oic.r.location.geofence.contributor"],
+              "contributingentity": {"entitydid": "aa:bb:cc:dd","entitydescription": "kitchen sensor"},
+              "referenceentity": {"entitydid": "aa:bb:cc:dd","entitydescription": "kitchen sensor"},
+              "geofenceEntity": {
+                "referenceentity": {"entityid":"00:11:22:33","entitydescription":"Mom"},
+                "geofenceradius": 5
+              },
+            "schema": {"$ref": "#/definitions/GeofenceContributor"}
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "The geofence entity submitted to location services\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface"},
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {"$ref": "#/definitions/GeofenceContributor"},
+            "x-example": {
+              "contributingentity": {"entitydid": "aa:bb:cc:dd","entitydescription": "kitchen sensor"},
+              "referenceentity": {"entitydid": "aa:bb:cc:dd","entitydescription": "kitchen sensor"},
+              "geofenceEntity": {
+                "referenceentity": {"entityid":"00:11:22:33","entitydescription":"Mom"},
+                "geofenceradius": 5
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success path",
+            "x-example": {
+              "contributingentity": {"entitydid": "aa:bb:cc:dd","entitydescription": "kitchen sensor"},
+              "referenceentity": {
+                "entitydid": "aa:bb:cc:dd",
+                "entitydescription": "kitchen sensor",
+                "geofenceradius": 5
+              },
+              "geofenceentity": {
+                "entity": {"entityid":"66:77:88:99:00","entitydescription":"Uncle Jack"},
+                "ingeofence": false,
+                "accuracy": 0.5,
+                "timestamp": "2018-05-05T13:13:13Z"
+              }
+            },
+            "schema": {"$ref": "#/definitions/GeofenceContributor"}
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface": {
+      "in": "query",
+      "name": "if",
+      "type": "string",
+      "enum": [
+        "oic.if.rw",
+        "oic.r.baseline"
+      ]
+    }
+  },
+  "definitions": {
+    "GeofenceContributor": {
+      "type": "object",
+      "properties": {
+        "rt": {
+          "description": "Resource Type",
+          "items": {
+            "maxLength": 64,
+            "type": "string",
+            "enum": ["oic.r.location.geofence.contributor"]
+          },
+          "minItems": 1,
+          "readOnly": true,
+          "uniqueItems": true,
+          "type": "array"
+        },
+        "if": {
+          "description": "The OCF Interface set supported by this Resource",
+          "items": {
+            "enum": [
+              "oic.if.baseline",
+              "oic.if.rw"
+            ],
+            "type": "string",
+            "maxLength": 64
+          },
+          "minItems": 2,
+          "readOnly": true,
+          "uniqueItems": true,
+          "type": "array"
+        },
+        "n": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "referenceentity": {
+            "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/GeofenceEntityResURI.swagger.json#/definitions/GeofenceEntity"
+        },
+        "geofenceentity": {
+            "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/GeofenceEntityReportResURI.swagger.json#/definitions/GeofenceEntityReport"
+        },
+        "contributingentity": {
+          "description": "The entity contributing the geofence entity",
+          "type": "object",
+          "properties": {
+            "entitydescription": {
+              "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-description"
+            },
+            "entityid": {
+              "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-id"
+            }
+          }
+        }
+      },
+      "required": ["referenceentity","geofenceentity"]
+    }
+  }
+}

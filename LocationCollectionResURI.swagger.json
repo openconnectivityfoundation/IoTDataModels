@@ -1,0 +1,295 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "Location Collection",
+		"version": "2021-12-17",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+	},
+	"schemes": ["http"],
+	"consumes": ["application/json"],
+	"produces": ["application/json"],
+	"paths": {
+		"/LocationCollectionResURI": {
+			"post": {
+				"description": "Generate new filtered collection (tracker) of location services entities.",
+				"parameters": [
+					{"$ref": "#/parameters/interface-builder"},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"schema": {"$ref": "#/definitions/schema-builder"},
+						"x-example": {
+							"eguidfilter": ["00:11:22:33:*"],
+							"aliasfilter": ["Mom", "Dad"],
+							"rtsfilter": ["oic.r.location.entity",
+								      "oic.r.location.entity.presence",
+								      "oic.r.location.entity.distance",
+								      "oic.r.location.entity.geofence",
+								      "oic.r.location.entity.position"
+								     ]
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success path.",
+						"x-example": {
+							"id": "collection-15",
+							"supportedlocationservices": ["entitycatalog", "presence", "distance", "geofence", "position"],
+							"rt": ["oic.r.locationcollection.builder"],
+							"if": ["oic.if.baseline", "oic.if.rw", "oic.if.create"],
+							"eguidfilter": ["00:11:22:33:*"],
+							"aliasfilter": ["Mom", "Dad"],
+							"rtsfilter": ["oic.r.location.entity",
+								      "oic.r.location.entity.presence",
+								      "oic.r.location.entity.distance",
+								      "oic.r.location.entity.geofence",
+								      "oic.r.location.entity.position"
+								     ]
+						},
+						"schema": {"$ref": "#/definitions/schema-builder"}
+					}
+				}
+			},
+			"get": {
+				"description": "Get default configuration for dynamic trackers.",
+				"parameters": [
+					{"$ref": "#/parameters/interface-builder"}
+				],
+				"responses": {
+					"200": {
+						"description": "Success response for get request with if=oic.if.baseline query",
+						"x-example": {
+							"id": "",
+							"supportedlocationservices": ["entitycatalog", "presence", "distance", "geofence", "position"],
+							"rt": ["oic.r.locationcollection.builder"],
+							"if": ["oic.if.baseline", "oic.if.rw", "oic.if.create"],
+							"eguidfilter": ["*"],
+							"aliasfilter": ["*"],
+							"rtsfilter": ["oic.r.location.entity",
+								      "oic.r.location.entity.presence",
+								      "oic.r.location.entity.distance",
+								      "oic.r.location.entity.geofence",
+								      "oic.r.location.entity.position"
+								     ]
+						},
+						"schema": {"$ref": "#/definitions/schema-builder"}
+					}
+				}
+			}
+		},
+		"/LocationCollectionResURI/{id}": {
+			"get": {
+				"description": "Get entity information from filtered collection.",
+				"parameters": [
+					{"$ref": "#/parameters/path-id"},
+					{"$ref": "#/parameters/interface-tracker"}
+				],
+				"responses": {
+					"200": {
+						"description": "Success response for get request with if=oic.if.baseline query",
+						"x-example": {
+							"rt": ["oic.r.locationcollection"],
+							"if": ["oic.if.baseline", "oic.if.ll", "oic.if.b", "oic.if.delete"],
+							"rts": ["oic.r.location.presence", "oic.r.position"],
+							"links": [
+								{
+									"href": "/{EntityPath1}",
+									"rt": ["oic.r.location.presence"],
+									"if": ["oic.if.s", "oic.if.baseline"]
+								},
+								{
+									"href": "/{EntityPath2}",
+									"rt": ["oic.r.location.position"],
+									"if": ["oic.if.s", "oic.if.baseline"]
+								}
+							]
+						},
+						"schema": {"$ref": "#/definitions/schema-tracker"}
+					}
+				}
+			}
+		}
+	},
+	"parameters": {
+		"path-id": {
+			"in": "path",
+			"name": "id",
+			"type": "string",
+			"description": "Unique collection identifier for filtered collection (tracker).",
+			"required": true
+		},
+		"interface-builder": {
+			"in": "query",
+			"name": "if",
+			"type": "string",
+			"enum": ["oic.if.baseline", "oic.if.rw","oic.if.create"]
+		},
+		"interface-tracker": {
+			"in": "query",
+			"name": "if",
+			"type": "string",
+			"enum": ["oic.if.baseline", "oic.if.ll", "oic.if.b", "oic.if.delete"]
+		}
+	},
+	"definitions": {
+		"link-types": {
+			"description": "Collection link resource types.",
+			"enum": ["oic.r.location.entity",
+				"oic.r.location.entity.distance",
+				"oic.r.location.entity.geofence",
+				"oic.r.location.entity.position",
+				"oic.r.location.entity.presence"
+			],
+			"type": "string"
+		},
+		"collection-link": {
+			"properties": {
+				"if": {
+					"description": "The interface set supported by the linked resource.",
+					"items": {
+						"enum": ["oic.if.baseline", "oic.if.s"],
+						"type": "string"
+					},
+					"minItems": 2,
+					"uniqueItems": true,
+					"readOnly": true,
+					"type": "array"
+				},
+				"rt": {
+					"description": "Resource type of the linked resource.",
+					"items": {
+						"$ref": "#/definitions/link-types"
+					},
+					"minItems": 1,
+					"maxItems": 1,
+					"uniqueItems": true,
+					"readOnly": true,
+					"type": "array"
+				},
+				"href": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/href"},
+				"anchor": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/anchor"},
+				"di": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/di"},
+				"eps": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/eps"},
+				"ins": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/ins"},
+				"p": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/p"},
+				"rel": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/rel_array"},
+				"title": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/title"},
+				"type": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/type"}
+			},
+			"type": "object",
+			"required": ["href", "rt", "if"]
+		},
+		"schema-builder": {
+			"properties": {
+				"eguidfilter": {
+					"description": "Regular expressions to match against entity globally unique id for collection filtering.",
+					"items": {
+						"maxLength": 128,
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"aliasfilter": {
+					"description": "Regular expressions to match against aliases for collection filtering.",
+					"items": {
+						"maxLength": 128,
+						"type": "string"
+					},
+					"type": "array"
+				},
+				"rtsfilter": {
+					"description": "Resource types allowed.",
+					"items": {
+						"$ref": "#/definitions/link-types"
+					},
+					"minItems": 1,
+					"type": "array",
+					"uniqueItems": true
+				},
+				"rt": {
+					"description": "OCF collection resource type.",
+					"items": {
+						"enum": ["oic.r.locationcollection.builder"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				},
+				"if": {
+					"description": "OCF resource types supported.",
+					"items": {
+						"enum": ["oic.if.baseline", "oic.if.rw"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				},
+				"supportedlocationservice": {
+					"description": "Array of possible entities the device supports.",
+					"items": {
+						"enum": ["entitycatalog", "presence", "distance", "geofence", "position"],
+						"type": "string"
+					},
+					"type": "array",
+					"minItems": 1,
+					"readOnly": true
+				},
+				"id": {"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"}
+			},
+			"type": "object",
+			"required": ["id"]
+		},
+		"schema-tracker": {
+			"properties": {
+				"links": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/collection-link"
+					}
+				},
+				"rts": {
+					"items": {
+						"$ref": "#/definitions/link-types"
+					},
+					"minItems": 1,
+					"type": "array",
+					"uniqueItems": true
+				},
+				"rt": {
+					"description": "OCF collection resource type.",
+					"items": {
+						"enum": ["oic.r.locationcollection.tracker"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				},
+				"if": {
+					"description": "OCF resource types supported..",
+					"items": {
+						"enum": ["oic.if.baseline", "oic.if.ll", "oic.if.b"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				}
+			},
+			"type": "object"
+		}
+	}
+}
