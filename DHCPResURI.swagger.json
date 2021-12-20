@@ -1,0 +1,142 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "DHCP",
+    "version": "2021-12-20",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/DHCPResURI" : {
+      "get": {
+        "description": "This Resource describes a DHCP service.",
+        "parameters": [
+          {"$ref": "#/parameters/interface"}
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "rt": ["oic.r.network.dhcp"],
+              "if": ["oic.if.a", "oic.if.baseline"],
+              "startAddress": "192.168.1.15",
+              "endAddress": "192.168.1.30",
+              "numAddresses" : 15,
+              "leaseTime": 86400
+            },
+            "schema": { "$ref": "#/definitions/DHCP" }
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {"$ref": "#/parameters/interface"},
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/DHCP" },
+            "x-example": {
+              "startAddress": "192.168.1.15",
+              "endAddress": "192.168.1.30",
+              "numAddresses" : 15,
+              "leaseTime": 86400
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "startAddress": "192.168.1.15",
+              "endAddress": "192.168.1.30",
+              "numAddresses" : 15,
+              "leaseTime": 86400
+            },
+            "schema": { "$ref": "#/definitions/DHCP" }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface" : {
+      "in": "query",
+      "name": "if",
+      "type": "string",
+      "enum": ["oic.if.a", "oic.if.baseline"]
+    }
+  },
+  "definitions": {
+    "DHCP" : {
+      "properties": {
+        "rt": {
+          "description": "The Resource Type.",
+          "items": {
+            "enum": ["oic.r.network.dhcp"],
+            "maxLength": 64,
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        },
+        "startAddress": {
+          "description": "The first address in the DHCP range.",
+          "type": "string"
+        },
+        "endAddress" : {
+          "description" : "The last address in the DHCP range.",
+          "type" : "string"
+        },
+          "numAddresses": {
+          "description" : "The number of addresses in the DHCP range.",
+          "type": "integer"
+        },
+        "leaseTime": {
+          "description" : "THe amount of time the lease is valid in seconds.",
+          "type": "integer"
+        },
+        "staticLeases" : {
+          "type":"array",
+          "items": {
+            "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/dhcpLeaseResURI.swagger.json#/definitions/DHCPLease"
+          },
+          "minimum": 0,
+          "type":"object"
+        },
+        "n": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "if": {
+          "description": "The OCF Interface set supported by this Resource.",
+          "items": {
+            "enum": [
+              "oic.if.a",
+              "oic.if.baseline"
+            ],
+            "type": "string"
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "required": ["startAddress","endAddress","leaseTime"]
+    }
+  }
+}

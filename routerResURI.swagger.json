@@ -1,0 +1,133 @@
+{
+  "swagger": "2.0",
+  "info": {
+	   "title": "Router",
+     "version": "2021-12-20",
+     "license": {
+       "name": "OCF Data Model License",
+       "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+       "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+     },
+     "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/RouterResURI" : {
+      "get": {
+        "description": "This Resource describes the general resources of a router.\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface"}
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "rt": ["oic.r.network.router.general"],
+              "if": ["oic.if.a", "oic.if.baseline"],
+              "value": false
+            },
+            "schema": { "$ref": "#/definitions/BinarySwitch" }
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {"$ref": "#/parameters/interface"},
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/BinarySwitch" },
+            "x-example": {
+              "value": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "value": true
+            },
+            "schema": { "$ref": "#/definitions/BinarySwitch" }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface" : {
+      "in": "query",
+      "name": "if",
+      "type": "string",
+      "enum": ["oic.if.a", "oic.if.baseline"]
+    }
+  },
+  "definitions": {
+    "router" : {
+      "properties": {
+        "rt": {
+          "description": "The Resource Type.",
+          "items": {
+            "enum": ["oic.r.network.interface"],
+            "maxLength": 64,
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        },
+        "uptime": {
+          "description": "The amount of time passed since last boot",
+          "type":"string",
+          "maxlength": 64
+        },
+        "dmzenabled": {
+          "description": "True if DMZ is enabled, false if not",
+          "type": "boolean"
+        },
+        "dmzstart": {
+          "description": "The starting address for DMZ forwarding",
+          "type":"string",
+          "maxlength": 64
+        },
+        "dmzstart": {
+          "description": "The starting address for DMZ forwarding",
+          "type":"string",
+          "maxlength": 64
+        },
+        "dmzaddress": {
+          "description" : "The target IP Address for the DMZ",
+          "type": "string",
+          "maxlength": 64
+        },
+        "n": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "if": {
+          "description": "The OCF Interface set supported by this Resource.",
+          "items": {
+            "enum": [
+              "oic.if.a",
+              "oic.if.baseline"
+            ],
+            "type": "string"
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "required": ["uptime"]
+    }
+  }
+}

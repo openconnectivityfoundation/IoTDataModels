@@ -1,0 +1,153 @@
+{
+  "swagger": "2.0",
+  "info": {
+	   "title": "Wifi",
+     "version": "2021-12-20",
+     "license": {
+       "name": "OCF Data Model License",
+       "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+       "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+     },
+     "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/WiFiResURI" : {
+      "get": {
+        "description": "This Resource describes a wifi configuration.\nT",
+        "parameters": [
+          {"$ref": "#/parameters/interface"}
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "rt": ["oic.r.network.wifi"],
+              "if": ["oic.if.a", "oic.if.baseline"],
+              "swf": ["2.4GHZ"]
+            },
+            "schema": { "$ref": "#/definitions/wifi" }
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {"$ref": "#/parameters/interface"},
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/wifi" },
+            "x-example": {
+              "swf": ["2.4GHZ"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "swf": ["2.4GHZ"]
+            },
+            "schema": { "$ref": "#/definitions/wifi" }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface" : {
+      "in": "query",
+      "name": "if",
+      "type": "string",
+      "enum": ["oic.if.a", "oic.if.baseline"]
+    }
+  },
+  "definitions": {
+    "wifi" : {
+      "properties": {
+        "rt": {
+          "description": "The Resource Type.",
+          "items": {
+            "enum": ["oic.r.network.wifi"],
+            "maxLength": 64,
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        },
+        "enabled": {
+          "description": "If the service is enabled true, if disabled false",
+          "type":"boolean"
+        },
+        "wifiConf": {
+          "$ref": "https://github.com/openconnectivityfoundation/core-extensions/swagger2.0/oic.r.wificonf.swagger.json#/definitions/WiFiConf"
+        },
+        "broadcast" : {
+          "description" : "If true the SSID is broadcast, if false the SSID is hidden",
+          "type": "boolean"
+        },
+        "isolation": {
+          "description" : "If true clients can only communicate with the Intenet, if false, clients can communicate with devices on the local LAN and other wireless devices",
+          "type": "boolean"
+        },
+        "passphrase": {
+          "description": "The passphrase for the link encryption",
+          "type": "string",
+          "maxLength": 64
+        },
+        "keyinterval" : {
+          "description": "The re key interval in seconds",
+          "type":"integer"
+        },
+        "channel": {
+          "description": "The channel selected for this Wifi network",
+          "type": "string",
+          "maxLength" : 64
+        },
+        "MacAddress": {
+          "description": "The MAC address of the interface",
+          "type": "string",
+          "maxLength": 64
+        },
+        "channelWidth": {
+          "description": "The width of the channel, not 80MHZ is only supported for 5GHZ wifi",
+          "enum" : [
+            "20MHZ",
+            "40MHZ",
+            "80MHZ"
+          ],
+          "type": "string",
+          "maxLength": 16
+        },
+        "n": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "if": {
+          "description": "The OCF Interface set supported by this Resource.",
+          "items": {
+            "enum": [
+              "oic.if.a",
+              "oic.if.baseline"
+            ],
+            "type": "string"
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "required": ["enabled"]
+    }
+  }
+}
