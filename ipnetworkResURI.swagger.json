@@ -1,0 +1,161 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "IP Network",
+    "version": "2021-12-20",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/ipnetworkResURI" : {
+      "get": {
+        "description": "This Resource specifies an IP network.",
+        "parameters": [
+          {"$ref": "#/parameters/interface"}
+        ],
+        "responses": {
+            "200": {
+              "description" : "",
+              "x-example":
+                {
+                  "rt": ["oic.r.network.ip"],
+                  "if": ["oic.if.a", "oic.if.baseline"],
+                  "connectionType": "static",
+                  "ipAddress": "192.168.0.2",
+                  "netmask": "255.255.255.0",
+                  "gateway": "192.168.0.1",
+                  "macAddress": "01:02:03:04:05:06",
+                  "mtu": 1500
+                },
+              "schema": { "$ref": "#/definitions/IPNetwork" }
+            }
+        }
+      },
+      "post": {
+        "description": "Sets the current IP Network attributes\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface"},
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/IPAddress" },
+            "x-example":
+              {
+                "ipAddress": "192.168.0.1",
+                "netmask": "255.255.255.0"
+              }
+          }
+        ],
+        "responses": {
+            "200": {
+              "description" : "",
+              "x-example":
+                {
+                  "ipAddress": "192.168.0.1",
+                  "netmask": "255.255.255.0"
+                },
+              "schema": { "$ref": "#/definitions/IPAddress" }
+            }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface" : {
+      "in": "query",
+      "name": "if",
+      "type": "string",
+      "enum": ["oic.if.a", "oic.if.baseline"]
+    }
+  },
+  "definitions": {
+    "IPNetwork" : {
+      "properties": {
+        "rt": {
+          "description": "The Resource Type.",
+          "items": {
+            "enum": ["oic.r.network.ip"],
+            "maxLength": 64,
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        },
+        "networkType": {
+            "description" : "If the network is a WAN netowkr or a LAN network",
+            "enum" : [
+                "WAN",
+                "LAN"
+                ]
+        },
+        "connectionType" : {
+            "description" : "The type of connection i.e. DHCP, static. PPPOE",
+            "enum" : [
+                "DHCP",
+                "static",
+                "PPPOE"
+                ],
+                "type" : "string"
+        },
+        "ipAddress": {
+            "description": "The IPV4 or IPv6 address  e.g 192.168.0.1",
+            "type": "string",
+            "maxlength" : 64
+        },
+        "netmask": {
+            "description": "The the subnet mask for the address",
+            "type":"string",
+            "maxlength": 64
+        },
+        "gateway" : {
+            "description": "The ip address of the gateway for the ipAddress",
+            "type" : "string",
+            "maxlength": 64
+        },
+        "macAddress" : {
+             "$ref":"https://openconnectivityfoundation.github.io/IoTDataModels/MacAddressResURI.swagger.json#/definitions/macaddress"
+        },
+        "mtu": {
+            "description": "Maximum transmission Unit",
+            "type": "integer"
+        },
+        "portState": {
+            "description": "The state of the port, link, rate",
+            "type" : "string"
+        },
+        "n": {
+            "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+            "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "if": {
+          "description": "The OCF Interface set supported by this Resource.",
+          "items": {
+            "enum": [
+              "oic.if.a",
+              "oic.if.baseline"
+            ],
+            "type": "string"
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "required": ["ipaddress"]
+    }
+  }
+}

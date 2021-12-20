@@ -1,0 +1,268 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Binary Switch Collection",
+    "version": "2021-12-20",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/BinarySwitchCollectionResURI?if=oic.if.ll" : {
+      "get": {
+        "description": "This Resource describes a collection of binary switches (on/off).\nThe Property \"value\" is a boolean.\nA value of 'true' means that the switch is on.\nA value of 'false' means that the switch is off.\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface-all"}
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example":  [
+              {"href": "/switch1ResURI", "rt": ["oic.r.switch.binary"], "if": ["oic.if.a","oic.if.baseline"], "eps": [{"ep": "coaps://[fe80::b1d6]:1122"}]},
+              {"href": "/switch2ResURI", "rt": ["oic.r.switch.binary"], "if": ["oic.if.a","oic.if.baseline"], "eps": [{"ep": "coaps://[fe80::b1d6]:1122"}]},
+              {"href": "/switch3ResURI", "rt": ["oic.r.switch.binary"], "if": ["oic.if.a","oic.if.baseline"], "eps": [{"ep": "coaps://[fe80::b1d6]:1122"}]},
+              {"href": "/switch4ResURI", "rt": ["oic.r.switch.binary"], "if": ["oic.if.a","oic.if.baseline"], "eps": [{"ep": "coaps://[fe80::b1d6]:1122"}]}
+            ],
+            "schema": { "$ref": "#/definitions/BinarySwitch-ll" }
+          }
+        }
+      }
+    },
+    "/BinarySwitchCollectionResURI?if=oic.if.b": {
+      "get": {
+        "description": "This Resource describes a collection of binary switches (on/off).\nThe Property \"value\" is a boolean.\nA value of 'true' means that the switch is on.\nA value of 'false' means that the switch is off.\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface-all"}
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example":  [
+              {
+                "href": "/Switch1ResURI",
+                "rep": {
+                  "value": true
+                }
+              },
+              {
+                "href": "/Switch2ResURI",
+                "rep": {
+                  "value": false
+                }
+              }
+            ],
+            "schema": { "$ref": "#/definitions/BinarySwitchBatch-Retrieve" }
+          }
+        }
+      }
+    },
+    "/BinarySwitchCollectionResURI?if=oic.if.baseline" : {
+      "get": {
+        "description": "This Resource describes a collection of binary switches (on/off).\nThe Property \"value\" is a boolean.\nA value of 'true' means that the switch is on.\nA value of 'false' means that the switch is off.\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface-all"}
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "rt":    ["oic.r.switch.binary,collection","oic.wk.col"],
+              "if":    ["oic.if.ll","oic.if.b","oic.if.baseline"],
+              "rts":   ["oic.r.binary.switch"],
+              "links": [
+                {"href": "/Switch1ResURI", "rt": ["oic.r.switch.binary"], "if": ["oic.if.a","oic.if.baseline"], "eps": [{"ep": "coaps://[fe80::b1d6]:1122"}]},
+                {"href": "/Switch2ResURI", "rt": ["oic.r.switch.binary"], "if": ["oic.if.a","oic.if.baseline"], "eps": [{"ep": "coaps://[fe80::b1d6]:1122"}]},
+                {"href": "/Switch3ResURI", "rt": ["oic.r.switch.binary"], "if": ["oic.if.a","oic.if.baseline"], "eps": [{"ep": "coaps://[fe80::b1d6]:1122"}]},
+                {"href": "/Switch4ResURI", "rt": ["oic.r.switch.binary"], "if": ["oic.if.a","oic.if.baseline"], "eps": [{"ep": "coaps://[fe80::b1d6]:1122"}]}
+              ]
+            },
+            "schema": { "$ref": "#/definitions/BinarySwitch-Retrieve" }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface-all" : {
+      "in" : "query",
+      "name" : "if",
+      "type" : "string",
+      "enum" : ["oic.if.ll", "oic.if.b", "oic.if.baseline"]
+    }
+  },
+  "definitions": {
+    "BinarySwitch-ll" : {
+      "items": {
+        "$ref": "#/definitions/oic.oic-link"
+      },
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "readOnly": true
+    },
+    "oic.oic-link": {
+      "type": "object",
+      "properties": {
+        "anchor": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/anchor"
+        },
+        "di": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/di"
+        },
+        "eps": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/eps"
+        },
+        "href": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/href"
+        },
+        "ins": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/ins"
+        },
+        "p": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/p"
+        },
+        "rel": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/rel_array"
+        },
+        "title": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/title"
+        },
+        "type": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/type"
+        },
+        "if": {
+          "description": "The OCF Interfaces supported by the target Resource",
+          "items": {
+            "enum": [
+              "oic.if.a",
+              "oic.if.baseline"
+            ],
+            "type": "string",
+            "maxLength": 64
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "type": "array",
+          "readOnly": true
+        },
+        "rt": {
+          "description": "Resource Type of the target Resource",
+          "items": {
+            "maxLength": 64,
+            "type": "string",
+            "enum": ["oic.r.switch.binary"]
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true,
+          "readOnly": true
+        }
+      },
+      "required": [
+        "href",
+        "rt",
+        "if"
+      ]
+    },
+    "BinarySwitch-Retrieve" : {
+      "properties": {
+        "rt": {
+          "description": "The Resource Type.",
+          "items": {
+            "enum": ["oic.r.switch.binary"],
+            "maxLength": 64,
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        },
+        "links": {
+          "items": {
+            "$ref": "#/definitions/oic.oic-link"
+          },
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "readOnly": true
+        },
+        "n": {
+          "$ref" : "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+          "$ref" : "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "rts": {
+          "items": {
+            "anyOf": [
+              {
+                "enum": [
+                  "oic.r.switch.binary",
+                  "oic.r.value.conditional"
+                ],
+                "type": "string",
+                "maxLength": 64
+              },
+              {
+                "enum": [
+                  "oic.r.switch.binary"
+                ],
+                "type": "string",
+                "maxLength": 64
+              }
+            ]
+          },
+          "minItems": 1,
+          "type": "array",
+          "readOnly": true,
+          "uniqueItems": true
+        },
+        "if": {
+          "description": "The OCF Interfaces supported by this Resource",
+          "items": {
+            "enum": [
+              "oic.if.ll",
+              "oic.if.b",
+              "oic.if.baseline"
+            ],
+            "type": "string",
+            "maxLength": 64
+          },
+          "minItems": 1,
+          "readOnly": true,
+          "uniqueItems": true,
+          "type": "array"
+        }
+      },
+      "type" : "object"
+    },
+    "BinarySwitchBatch-Retrieve" : {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "href": {
+            "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.links.properties.core-schema.json#/definitions/href"
+          },
+          "rep": {
+            "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/HeatingZoneResURI.swagger.json#/definitions/BinarySwitch"
+          }
+        },
+        "required": [
+          "href",
+          "rep"
+        ]
+      }
+    }
+  }
+}

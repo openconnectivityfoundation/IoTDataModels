@@ -1,0 +1,168 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Virtual Private Network",
+    "version": "2021-12-20",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/VPNResURI" : {
+      "get": {
+        "description": "This Resource describes a VPN.\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface"}
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "rt": ["oic.r.network.vpn"],
+              "if": ["oic.if.a", "oic.if.baseline"],
+              "enabled": false,
+              "isDefaultGateway": true,
+              "vpnMode": "main",
+              "presharedKey": "This1sAPreSharedKey",
+              "startAddress": "192.168.12.5",
+              "endAddress": "192.168.12.250",
+              "dhcpServer": "192.168.12.2"
+            },
+            "schema": { "$ref": "#/definitions/VPN" }
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {"$ref": "#/parameters/interface"},
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/VPN" },
+            "x-example": {
+              "isDefaultGateway": true,
+              "vpnMode": "main",
+              "presharedKey": "This1sAPreSharedKey",
+              "startAddress": "192.168.12.5",
+              "endAddress": "192.168.12.250",
+              "dhcpServer": "192.168.12.2"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "isDefaultGateway": true,
+              "vpnMode": "main",
+              "presharedKey": "This1sAPreSharedKey",
+              "startAddress": "192.168.12.5",
+              "endAddress": "192.168.12.250",
+              "dhcpServer": "192.168.12.2"
+            },
+            "schema": { "$ref": "#/definitions/VPN" }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface" : {
+      "in": "query",
+      "name": "if",
+      "type": "string",
+      "enum": ["oic.if.a", "oic.if.baseline"]
+    }
+  },
+  "definitions": {
+    "VPN" : {
+      "properties": {
+        "rt": {
+          "description": "The Resource Type.",
+          "items": {
+            "enum": ["oic.r.network.vpn"],
+            "maxLength": 64,
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        },
+        "enabled": {
+          "description": "True if the VPN is enabled.",
+          "type": "boolean"
+        },
+        "isDefaultGateway": {
+          "description" : "True if default gateway.",
+          "type" : "boolean"
+        },
+        "vpnMode": {
+          "description" : "The mode for initiating the VPN",
+          "enum" : [
+            "main",
+            "aggressive",
+            "quick"
+          ],
+          "type": "string"
+        },
+        "presharedKey": {
+          "description" : "The pre-shared key for the VPN",
+          "type" : "string"
+        },
+        "startAddress": {
+          "description" : "The starting address for VPNs",
+          "type": "string"
+        },
+        "endAddress" : {
+          "description": "The ending address for VPNs",
+          "type":"string"
+        },
+        "dhcpServer": {
+          "description" : "The address of the dhcpserver for this VPN",
+          "type":"string"
+        },
+        "users": {
+          "description": "The list of authorized users",
+          "items" : {
+            "type": "string"
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        },
+        "n": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "if": {
+          "description": "The OCF Interface set supported by this Resource.",
+          "items": {
+            "enum": [
+              "oic.if.a",
+              "oic.if.baseline"
+            ],
+            "type": "string"
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "required": ["enabled"]
+    }
+  }
+}

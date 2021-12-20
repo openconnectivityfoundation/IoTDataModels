@@ -1,0 +1,131 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "DHCP Lease",
+    "version": "2021-12-20",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/DHCPLeasehResURI" : {
+      "get": {
+        "description": "This Resource describes a DHCP Lease.\n",
+        "parameters": [
+          {"$ref": "#/parameters/interface"}
+        ],
+        "responses": {
+            "200": {
+              "description" : "",
+              "x-example":
+                {
+                  "rt": ["oic.r.netowrk.dhcp.lease"],
+                  "if": ["oic.if.a", "oic.if.baseline"],
+                  "value": false
+                },
+              "schema": { "$ref": "#/definitions/DHCPLease" }
+            }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {"$ref": "#/parameters/interface"},
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": { "$ref": "#/definitions/DHCPLease" },
+            "x-example":
+              {
+                "value": true
+              }
+          }
+        ],
+        "responses": {
+            "200": {
+              "description" : "",
+              "x-example":
+                {
+                  "value": true
+                },
+              "schema": { "$ref": "#/definitions/DHCPLease" }
+            }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface" : {
+      "in": "query",
+      "name": "if",
+      "type": "string",
+      "enum": ["oic.if.a", "oic.if.baseline"]
+    }
+  },
+  "definitions": {
+    "DHCPLease" : {
+      "properties": {
+        "rt": {
+          "description": "The Resource Type.",
+          "items": {
+            "enum": ["oic.r.network.dhcp.lease"],
+            "maxLength": 64,
+            "type": "string"
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        },
+        "IPAddress": {
+          "description": "The IP Address of the Lease.",
+          "type": "string",
+          "maxLength": 64
+        },
+        "LeaseTime": {
+            "description": "The duration of the lease in seconds.",
+            "type": "integer",
+            "maximum":4294967295,
+            "minimum": 1
+        },
+	    "MACAddress": {
+            "$ref":"https://openconnectivityfoundation.github.io/IoTDataModels/MacAddressResURI.swagger.json#/definitions/macaddress"
+
+	    },
+        "ExpireTime" : {
+           "description": "The time that his lease expires.",
+                "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/TimeStampResURI.swagger.json#/definitions/TimeStamp"
+        },
+        "n": {
+            "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+            "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "if": {
+          "description": "The OCF Interface set supported by this Resource.",
+          "items": {
+            "enum": [
+              "oic.if.a",
+              "oic.if.baseline"
+            ],
+            "type": "string"
+          },
+          "minItems": 2,
+          "uniqueItems": true,
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type": "object",
+      "required": ["IPAddress", "ExpireTime"]
+    }
+  }
+}
