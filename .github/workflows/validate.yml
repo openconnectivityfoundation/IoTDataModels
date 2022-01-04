@@ -24,6 +24,6 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: swagger-cli
-      uses: vaibhav-jain/spectral-action/@v2.6
+      uses: crudo/spectral-action
       with:
         file_path: 3DPrinterResURI.swagger.json
