@@ -20,10 +20,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Get Repo
-      id: getfiles
+      id: getrepo
       uses: actions/checkout@v2
     - name: Get OpenAPI files
-      id: getfiles-run
+      id: getfiles
       run:  |
         # Using github env (newline separated file list)
         echo 'FILE_LIST<<EOF' >> $GITHUB_ENV
