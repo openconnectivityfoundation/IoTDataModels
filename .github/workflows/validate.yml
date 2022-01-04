@@ -19,11 +19,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    - name: Get OpenAPI files
+      id: getfiles
+      uses: actions/checkout@v2
+      run:  |
+        # Using github env (newline separated file list)
+        echo 'FILE_LIST<<EOF' >> $GITHUB_ENV
+        find lib -type f -iname "*.swagger.json" >> $GITHUB_ENV
+        echo 'EOF' >> $GITHUB_ENV
 
-    # Runs a single command using the runners shell
-    - name: swagger-cli
-      uses: crudo/spectral-action/@v6.1.0
+        # Using step output (space separated file list)
+        FILES="$(find lib -type f -iname "*.json")"
+        echo "::set-output name=file_list::$FILES"
+    - name: swagger-validator
+      uses: mbowman100/swagger-validator-action@master
+      if: env.FILE_COUNT != '0' # Comment out if you want it to fail if no files found
       with:
-        file_path: ./3DPrinterResURI.swagger.json
+        files: ${{ env.FILE_LIST }}
+        # files: ${{ steps.getfiles.outputs.file_list }} # For if you're using output
