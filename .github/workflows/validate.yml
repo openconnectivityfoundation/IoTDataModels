@@ -27,11 +27,11 @@ jobs:
       run:  |
         # Using github env (newline separated file list)
         echo 'FILE_LIST<<EOF' >> $GITHUB_ENV
-        find lib -type f -iname "*.swagger.json" >> $GITHUB_ENV
+        find . -type f -iname "*.swagger.json" >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
 
         # Using step output (space separated file list)
-        FILES="$(find lib -type f -iname "*.json")"
+        FILES="$(find . -type f -iname "*.json")"
         echo "::set-output name=file_list::$FILES"
     - name: swagger-validator
       uses: mbowman100/swagger-validator-action@master
