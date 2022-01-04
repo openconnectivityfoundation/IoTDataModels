@@ -22,7 +22,7 @@ jobs:
     - name: Get Repo
       id: getfiles
       uses: actions/checkout@v2
-   - name: Get OpenAPI files
+    - name: Get OpenAPI files
       id: getfiles-run
       run:  |
         # Using github env (newline separated file list)
