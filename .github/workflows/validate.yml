@@ -24,6 +24,6 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: swagger-cli
-      uses: crudo/spectral-action
+      uses: crudo/spectral-action/@v6.1.0
       with:
-        file_path: 3DPrinterResURI.swagger.json
+        file_path: ./3DPrinterResURI.swagger.json
