@@ -4,6 +4,18 @@ name: CI-validate
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
+
+#outputs:
+#  random-number:
+#    description: "Random number"
+#    value: ${{ steps.random-number-generator.outputs.random-id }}
+#runs:
+#  using: "composite"
+#  steps:
+#    - id: random-number-generator
+#      run: echo "::set-output name=random-id::$(echo $RANDOM)"
+#      shell: bash
+
 on:
   push:
     branches: [ master ]
@@ -33,10 +45,10 @@ jobs:
         # Using step output (space separated file list)
         FILES="$(find . -type f -iname "*.json")"
         echo "::set-output name=file_list::$FILES"
+
     - name: swagger-validator
       #uses: mbowman100/swagger-validator-action@master
       uses: mbowman100/swagger-validator-action@2.0
       #'if: env.FILE_COUNT != '0' # Comment out if you want it to fail if no files found
       with:
-        #files: ${{ env.FILE_LIST }}
-        files: ${{ steps.getfiles.outputs }} # For if you're using output
+        files: ${{ steps.getfiles.outputs.file_list }} # For if you're using output
