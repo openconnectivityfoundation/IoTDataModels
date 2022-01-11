@@ -51,4 +51,5 @@ jobs:
       uses: mbowman100/swagger-validator-action@2.0
       #'if: env.FILE_COUNT != '0' # Comment out if you want it to fail if no files found
       with:
-        files: ${{ steps.getfiles.outputs.file_list }} # For if you're using output
+        files: ${{ env.FILE_LIST }}
+        #files: ${{ steps.getfiles.outputs.file_list }} # For if you're using output
