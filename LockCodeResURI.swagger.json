@@ -85,6 +85,7 @@
           "type": "array"
         },
         "lockCodeList": {
+          "description": "The list of lock codes.",
           "items": {
             "description": "The value for the lock code.",
             "type": "string"
