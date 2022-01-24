@@ -96,6 +96,7 @@
           "type": "integer"
         },
         "strengthrange": {
+          "description": "The minimum and maximum value of the strength of the brewed drink.",
           "items": {
             "type": "integer"
           },
