@@ -129,6 +129,7 @@
           "type": "array"
         },
         "media": {
+          "description": "The media object, containing SDP and url.",
           "items": {
             "properties": {
               "sdp": {
