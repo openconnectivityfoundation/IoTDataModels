@@ -105,6 +105,7 @@
           "type": "array"
         },
         "if": {
+          "description": "The OCF Interface set supported by this Resource.",
           "items": {
             "enum": ["oic.if.rw", "oic.if.baseline"],
             "type": "string"
