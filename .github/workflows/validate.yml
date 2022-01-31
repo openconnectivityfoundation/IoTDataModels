@@ -49,7 +49,7 @@ jobs:
         ! -path '*GasUsageResURI*'\
         ! -path '*RefrigerationResURI*'\
         ! -path '*HeartRateMonitorAM*'\
-        ! -path '*BloodPressureMonitorAMResURI*' >> $GITHUB_ENV
+        ! -path '*BloodPressureMonitorAMResURI*'
         echo 'EOF' >> $GITHUB_ENV
 
         # Using step output (space separated file list)
