@@ -41,7 +41,7 @@ jobs:
         # find . -type f \( -iname ".*" ! -iname ".htaccess" \)
         # Refrige  Refrigera
         echo 'FILE_LIST<<EOF' >> $GITHUB_ENV
-        find . -type f -iname "*.swagger.json" ! -name '*BaseResourceS*' ! -name '*PulseOxi' ! -name 'Refrige*' ! -name '*AM.*' ! -iname '*AMResURI.*' ! -iname '*UsageResURI.*' >> $GITHUB_ENV
+        find . -type f -iname "*.swagger.json" ! -name '*BaseResourceS*' ! -name '*PulseOxi' ! -name 'Refrige*' ! -name '*AM.*' ! -iname '*AMResURI.*' ! -iname '*UsageResURI.*' ! -iname 'EnergyRes.*' ! -iname 'ValueCondi*' ! -iname 'AirFlowC  >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
 
         # Using step output (space separated file list)
