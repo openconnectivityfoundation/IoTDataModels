@@ -39,7 +39,17 @@ jobs:
       run:  |
         # Using github env (newline separated file list)
         echo 'FILE_LIST<<EOF' >> $GITHUB_ENV
-        find . ! -path '*BaseResourceSchemaResURI*' -type f -iname "*.swagger.json" >> $GITHUB_ENV
+        find . ! -name '*BaseResourceSchemaResURI*'\
+        ! -name '*PulseOximeterAM*'\
+        ! -name '*EnergyUsageResURI*'\
+        ! -name '*GlucoseMeterAMResURI*'\
+        ! -name '*BodyScaleAMResURI*'\
+        ! -name '*EnergyResURI*'\
+        ! -name '*GasUsageResURI*'\
+        ! -name '*RefrigerationResURI*'\
+        ! -name '*HeartRateMonitorAM*'\
+        ! -name '*BloodPressureMonitorAMResURI*'\
+        -type f -iname "*.swagger.json" >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
 
         # Using step output (space separated file list)
