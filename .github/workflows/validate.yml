@@ -44,16 +44,16 @@ jobs:
         find . -type f -iname "*.swagger.json" ! -name '*BaseResourceS*' ! -name '*PulseOxi' ! -name 'Refrige*' ! -name '*AM.*' ! -iname '*AMResURI.*' ! -iname '*UsageResURI*' ! -iname 'EnergyRes*' ! -iname 'ValueCondi*' ! -iname 'AirFlowC*' ! -iname 'IASZo*' >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
         ## files not checked:
-        find . -type f -name '*BaseResourceS*' 
-        find . -type f -name '*PulseOxi' 
-        find . -type f -name 'Refrige*' 
-        find . -type f -name '*AM.*' 
-        find . -type f -iname '*AMResURI.*' 
+        find . -type f -name '*BaseResourceS*'
+        find . -type f -name '*PulseOxi'
+        find . -type f -name 'Refrige*'
+        find . -type f -name '*AM.*'
+        find . -type f -iname '*AMResURI.*'
         find . -type f -iname '*UsageResURI*'
         find . -type f -iname 'EnergyRes*'
-        find . -type f -iname 'ValueCondi*' 
+        find . -type f -iname 'ValueCondi*'
         find . -type f -iname 'AirFlowC*'
-        find . -type f -iname 'IASZo*
+        find . -type f -iname 'IASZo*'
         # Using step output (space separated file list)
         FILES="$(find . -type f -iname "*.json")"
         echo "::set-output name=file_list::$FILES"
