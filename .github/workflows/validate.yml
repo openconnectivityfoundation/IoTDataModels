@@ -41,17 +41,16 @@ jobs:
         # find . -type f \( -iname ".*" ! -iname ".htaccess" \)
         echo 'FILE_LIST<<EOF' >> $GITHUB_ENV
         find . -type f \( -iname "*.swagger.json"  \
-        ! -path '*BaseResourceSchemaResURI*'\
-        ! -path '*PulseOximeterAM*'\
-        ! -path '*EnergyUsageResURI*'\
-        ! -path '*GlucoseMeterAMResURI*'\
-        ! -path '*BodyScaleAMResURI*'\
-        ! -path '*EnergyResURI*'\
-        ! -path '*GasUsageResURI*'\
-        ! -path '*RefrigerationResURI*'\
-        ! -path '*HeartRateMonitorAM*'\
-        ! -path '*BloodPressureMonitorAMResURI*' \
-         \) >> $GITHUB_ENV
+        ! -iname '*BaseResourceSchemaResURI*'\
+        ! -iname '*PulseOximeterAM*'\
+        ! -iname '*EnergyUsageResURI*'\
+        ! -iname '*GlucoseMeterAMResURI*'\
+        ! -iname '*BodyScaleAMResURI*'\
+        ! -iname '*EnergyResURI*'\
+        ! -iname '*GasUsageResURI*'\
+        ! -iname '*RefrigerationResURI*'\
+        ! -iname '*HeartRateMonitorAM*'\
+        ! -iname '*BloodPressureMonitorAMResURI*' \) >> $GITHUB_ENV
         echo 'EOF' >> $GITHUB_ENV
 
         # Using step output (space separated file list)
