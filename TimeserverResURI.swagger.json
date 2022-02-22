@@ -1,0 +1,139 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Time Server",
+      "version": "2020-12-02",
+      "license": {
+          "name": "OCF Data Model License",
+          "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+          "x-copyright": "Copyright 2018-2019 Open Connectivity Foundation, Inc. All rights reserved."
+      },
+      "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+    },
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+      "/TimeServerResURI" : {
+        "get": {
+          "description": "This Resource describes which time server protocol is supported by the device and which time server currently being used",
+          "parameters": [
+            {"$ref": "#/parameters/interface"}
+          ],
+          "responses": {
+              "200": {
+                "description" : "",
+                "x-example":
+                  {
+                    "rt": ["oic.r.time.server"],
+                    "if": ["oic.if.rw", "oic.if.baseline"],
+                    "protocol": ["NTP", "NTS"],
+                    "server": "time.google.com"
+                  },
+                "schema": { "$ref": "#/definitions/TimeServerGet" }
+              }
+          }
+        },
+        "post": {
+          "description": "",
+          "parameters": [
+            {"$ref": "#/parameters/interface"},
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": { "$ref": "#/definitions/TimeServer" },
+              "x-example":
+                {
+                  "server": "time.cloudflare.com"
+                }
+            }
+          ],
+          "responses": {
+              "200": {
+                "description" : "",
+                "x-example":
+                  {
+                    "server": "time.cloudflare.com"
+                  },
+                "schema": { "$ref": "#/definitions/TimeServer" }
+              }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "interface" : {
+        "in": "query",
+        "name": "if",
+        "type": "string",
+        "enum": ["oic.if.rw", "oic.if.baseline"]
+      }
+    },
+    "definitions": {
+      "TimeServerGet" : {
+        "properties": {
+          "rt": {
+            "description": "The Resource Type.",
+            "items": {
+              "enum": ["oic.r.time.server"],
+              "maxLength": 64,
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true,
+            "readOnly": true,
+            "type": "array"
+          },
+          "protocol": {
+            "description": "The supported time protocols.",
+            "items": {
+              "enum": ["NTP", "NTS"],
+              "maxLength": 64,
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true,
+            "readOnly": true,
+            "type": "array"
+          },
+          "server": {
+            "description": "The currently used time server.",
+            "type": "string"
+          },
+          "n": {
+              "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+          },
+          "id": {
+              "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+          },
+          "if": {
+            "description": "The OCF Interface set supported by this Resource.",
+            "items": {
+              "enum": [
+                "oic.if.rw",
+                "oic.if.baseline"
+              ],
+              "type": "string"
+            },
+            "minItems": 2,
+            "uniqueItems": true,
+            "readOnly": true,
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": ["protocol", "server"]
+      },
+      "TimeServer" : {
+        "properties": {
+          "server": {
+            "description": "The time server to be updated and reported back.",
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": ["server"]
+      }
+    }
+  }
