@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "title": "Presence Sensor",
-    "version": "2019-02-15",
+    "version": "2022-03-14",
     "license": {
       "name": "OCF Data Model License",
       "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
@@ -27,7 +27,11 @@
                 {
                   "rt": ["oic.r.sensor.presence"],
                   "if": ["oic.if.s", "oic.if.baseline"],
-                  "value": true
+                  "value": true,
+                  "persons": 2,
+                  "bb" : [ { "x1" : 5, "y1" : 7, "x2" : 200, "y2" : 322}, 
+                           { "x1" : 50, "y1" : 57, "x2" : 200, "y2" : 322}],
+                  "screen" : [ 600, 600]
                 },
               "schema": { "$ref": "#/definitions/Presence" }
             }
@@ -44,6 +48,7 @@
     }
   },
   "definitions": {
+
     "Presence" : {
       "properties": {
         "rt": {
@@ -59,9 +64,55 @@
           "type": "array"
         },
         "value": {
-          "description": "The presences sensor, true = precense sensed, false = precensenot sensed.",
+          "description": "The presences sensor, true = precense sensed, false = precense not sensed.",
           "readOnly": true,
           "type": "boolean"
+        }, 
+        "persons": {
+            "description": "number of persons detected. Should only be larger than 0 when presence is detected",
+            "readOnly": true,
+            "type": "integer"
+        },
+        "bb": {
+          "description": "The array of bounding boxes. one for each person detection. Each bounding box is defined with 2 points.",
+          "items": {
+            "minimum": 0,
+            "type": "object",
+            "description": "bounding box e.g. ( (x1,y1) (x2, y2) )  (x1,y2) = lower left point, (x2,y2) upper right point on screen",
+            "properties": {
+                "x1": { 
+                    "description": "x lower left of the bounding box.",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "y1": { 
+                    "description": "y lower left of the bounding box.",
+                    "type": "integer",
+                    "minimum": 0 
+                },
+                "x2": { 
+                    "description": "x upper right of the bounding box.",
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "y2": { 
+                    "description": "y upper right of the bounding box.",
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+          },
+          "type": "array"
+        },
+        "screen": {
+          "description": "The screen size, in width x height (WxH). e.g. The maximum values of x2 and y2 of an bounding box.",
+          "items": {
+            "minimum": 0,
+            "type": "integer"
+          },
+          "maxItems": 2,
+          "minItems": 2,
+          "type": "array"
         },
         "n": {
             "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
