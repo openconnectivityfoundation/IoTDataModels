@@ -1,0 +1,335 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Media Control",
+      "version": "20190606",
+      "license": {
+        "name": "OCF Data Model License",
+        "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+        "x-copyright": "Copyright 2018-2019 Open Connectivity Foundation, Inc. All rights reserved."
+      },
+      "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+    },
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "paths": {
+      "/MediaControlResURI": {
+        "get": {
+          "description": "This resource specifies the media control capabilities of a device.\nRetrieves the current media control settings.\nCurrent state is \"play\".\nThe transitions from \"play\" are the following:\n- stop\n- play\n- pause\n- fastforward (trick modes) change, using uri templates:\n  https://tools.ietf.org/html/rfc6570\n  where the expanded url will be:\n  MediaControlResURI?mediaspeed=2.5\n  where the \"allowedvalues\" gives the list of allowed values for the substitution\n- rewind (trick modes) change, using uri templates:\n  https://tools.ietf.org/html/rfc6570\n  where the expanded url will be:\n  MediaControlResURI?mediaspeed=-0.5\n  where the \"allowedvalues\" gives the list of allowed values for the substitution\n- stepforward (trick modes) change, using uri templates:\n  https://tools.ietf.org/html/rfc6570\n  where the expanded url will be:\n  MediaControlResURI?medialocation=20.0\n  where the \"range\" gives the range of allowed values and \"step\" give step increment for the substitution\n- stepbackward (trick modes) change, using uri templates:\n  https://tools.ietf.org/html/rfc6570\n  where the expanded url will be:\n  MediaControlResURI?medialocation=-20.0\n  where the \"range\" gives the range of allowed values and \"step\" gives step increment for the substitution\n- seek (location change), using uri templates:\n  https://tools.ietf.org/html/rfc6570\n  where the expanded url will be:\n  MediaControlResURI?medialocation=1500.0\n  where the \"range\" gives the range of allowed values for the substitution\n",
+          "parameters": [
+            {"$ref": "#/parameters/interface"}
+          ],
+          "responses": {
+            "200": {
+              "description": "Retrieve/get Response",
+              "x-example": {
+                "rt": ["oic.r.media.control"],
+                "playstate": true,
+                "mediaspeed": 1.0,
+                "medialocation": 53.0,
+                "mediaaction": "play",
+                "mediaactions": [
+                  {
+                    "mediaaction": "stop",
+                    "uriexp": "MediaControlResURI?mediaaction=stop&playstate=false&mediaspeed=0.0&medialocation=0.0"
+                  },
+                  {
+                    "mediaaction": "play",
+                    "uriexp": "MediaControlResURI?mediaaction=play&playstate=true&mediaspeed=1.0"
+                  },
+                  {
+                    "mediaaction": "pause",
+                    "uriexp": "MediaControlResURI?mediaaction=pause&playstate=false&mediaspeed=0.0"
+                  },
+                  {
+                    "mediaaction": "fastforward",
+                    "allowedvalues": [0.5, 1.0, 2.5, 5.0],
+                    "uriexp": "MediaControlResURI?mediaaction=fastforward{&mediaspeed}"
+                  },
+                  {
+                    "mediaaction": "rewind",
+                    "allowedvalues": [-0.5, -1.0, -2.5, -5.0],
+                    "uriexp": "MediaControlResURI?mediaaction=rewind{&mediaspeed}"
+                  },
+                  {
+                    "mediaaction": "stepforward",
+                    "range": [0.0, 3000.0],
+                    "step": 10.0,
+                    "uriexp": "MediaControlResURI?mediaaction=stepforward{&mediastep}"
+                  },
+                  {
+                    "mediaaction": "stepbackward",
+                    "range": [0.0, -3000.0],
+                    "step": 10.0,
+                    "uriexp": "MediaControlResURI?mediaaction=stepbackward{&mediastep}"
+                  },
+                  {
+                    "mediaaction": "seek",
+                    "range": [0.0,10000.0],
+                    "uriexp": "MediaControlResURI?mediaaction=seek{&medialocation}"
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/definitions/MediaControl"
+              }
+            }
+          }
+        },
+        "post": {
+          "description": "Sets the current media control values\n",
+          "parameters": [
+            {
+              "$ref": "#/parameters/QplayState"
+            },
+            {
+              "$ref": "#/parameters/QmediaSpeed"
+            },
+            {
+              "$ref": "#/parameters/QmediaStep"
+            },
+            {
+              "$ref": "#/parameters/QmediaLocation"
+            },
+            {
+              "$ref": "#/parameters/QmediaAction"
+            },
+            {
+              "name": "body",
+              "in": "body",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/MediaControlUpdate"
+              },
+              "x-example": {
+                "playstate": true,
+                "mediaspeed": 2.5,
+                "medialocation": 40.0,
+                "mediaaction": "fastforward"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Update/post Response",
+              "x-example": {
+                "playstate": true,
+                "mediaspeed": 2.5,
+                "medialocation": 40.0,
+                "mediaaction": "fastforward",
+                "mediaactions": [
+                  {
+                    "mediaaction": "stop",
+                    "uriexp": "MediaControlResURI?mediaaction=stop&playstate=false&mediaspeed=0.0&medialocation=0.0"
+                  },
+                  {
+                    "mediaaction": "play",
+                    "uriexp": "MediaControlResURI?mediaaction=play&playstate=true&mediaspeed=1.0"
+                  },
+                  {
+                    "mediaaction": "pause",
+                    "uriexp": "MediaControlResURI?mediaction=pause&playstate=false&mediaspeed=0.0"
+                  },
+                  {
+                    "mediaaction": "fastforward",
+                    "allowedvalues": [0.5, 1.0, 2.5, 5.0],
+                    "uriexp": "MediaControlResURI?mediaaction=fastforward{&mediaspeed}"
+                  },
+                  {
+                    "mediaaction": "rewind",
+                    "allowedvalues": [-0.5, -1.0, -2.5, -5.0],
+                    "uriexp": "MediaControlResURI?mediaaction=rewind{&mediaspeed}"
+                  },
+                  {
+                    "mediaaction": "stepforward",
+                    "range": [0.0, 3000.0],
+                    "step": 10.0,
+                    "uriexp": "MediaControlResURI?mediaaction=stepforward{&mediastep}"
+                  },
+                  {
+                    "mediaaction": "stepbackward",
+                    "range": [0.0, -3000.0],
+                    "step": 10.0,
+                    "uriexp": "MediaControlResURI?mediaaction=stepbackward{&mediastep}"
+                  },
+                  {
+                    "mediaaction": "seek",
+                    "range": [0.0, 10000.0],
+                    "uriexp": "MediaControlResURI?mediaaction=seek{&medialocation}"
+                  }
+                ]
+              },
+              "schema": {
+                "$ref": "#/definitions/MediaControl"
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters": {
+      "interface": {
+        "in": "query",
+        "name": "if",
+        "type": "string",
+        "enum": ["oic.if.rw","oic.if.baseline"]
+      },
+      "QplayState": {
+        "in": "query",
+        "name": "playstate",
+        "type": "boolean",
+        "description": "Play State.",
+        "x-queryexample": "MediaControlResURI?playstate=false"
+      },
+      "QmediaSpeed": {
+        "in": "query",
+        "name": "mediaspeed",
+        "type": "number",
+        "description": "Media Speed.",
+        "x-queryexample": "MediaControlResURI?mediaspeed=2.5"
+      },
+      "QmediaStep": {
+        "in": "query",
+        "name": "mediastep",
+        "type": "number",
+        "description": "Media Step (in seconds)",
+        "x-queryexample": "MediaControlResURI?mediastep=20.0"
+      },
+      "QmediaLocation": {
+        "in": "query",
+        "name": "medialocation",
+        "type": "number",
+        "description": "Media Location",
+        "x-queryexample": "MediaControlResURI?medialocation=40.0"
+      },
+      "QmediaAction": {
+        "in": "query",
+        "name": "mediaaction",
+        "type": "string",
+        "description": "Current Media Action",
+        "x-queryexample": "MediaControlResURI?mediaaction=fastforward"
+      }
+    },
+    "definitions": {
+      "MediaControl": {
+        "properties": {
+          "rt": {
+            "description": "Resource Type",
+            "items": {
+              "enum": ["oic.r.media.control"],
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true,
+            "readOnly": true,
+            "type": "array"
+          },
+          "if": {
+            "description": "The interface set supported by this resource",
+            "items": {
+              "enum": ["oic.if.rw","oic.if.baseline"],
+              "type": "string"
+            },
+            "minItems": 1,
+            "uniqueItems": true,
+            "readOnly": true,
+            "type": "array"
+          },
+          "playstate": {
+            "readOnly": true,
+            "description": "Allowed media control play state values.",
+            "type": "boolean"
+          },
+          "mediaspeed": {
+            "readOnly": true,
+            "description": "Allowed media control play speed values.",
+            "type": "number"
+          },
+          "medialocation": {
+            "readOnly": true,
+            "description": "Supports Rate Control for float values and Frame By Frame for number values for both positive and negative values.",
+            "type": "number"
+          },
+          "mediaaction": {
+            "readOnly": true,
+            "description": "Current Action received for media control.",
+            "enum": ["stop", "play", "pause", "fastforward", "rewind", "stepforward", "stepbackward", "seek"],
+            "type": "string"
+          },
+          "mediaactions": {
+            "readOnly": true,
+            "description": "The array of media actions that are supported for media control.",
+            "items": {
+              "$ref": "#/definitions/MediaAction"
+            },
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "type": "object",
+        "required": ["mediaaction", "mediaactions"]
+      },
+      "MediaControlUpdate": {
+        "properties": {
+          "playstate": {
+            "description": "Allowed media control play state values.",
+            "type": "boolean"
+          },
+          "mediaspeed": {
+            "description": "Allowed media control play speed values.",
+            "type": "number"
+          },
+          "medialocation": {
+            "description": "Supports Rate Control for float values and Frame By Frame for number values for both positive and negative values.",
+            "type": "number"
+          },
+          "mediaaction": {
+            "description": "Current Action received for media control.",
+            "enum": ["stop", "play", "pause", "fastforward", "rewind", "stepforward", "stepbackward", "seek"],
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": ["mediaaction"]
+      },
+      "MediaAction": {
+        "properties": {
+          "mediaaction": {
+            "description": "The name of the media action.",
+            "readOnly": true,
+            "enum": ["stop", "play", "pause", "fastforward", "rewind", "stepforward", "stepbackward", "seek"],
+            "type": "string"
+          },
+          "allowedvalues": {
+            "description": "The allowed values for the media speed",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 1,
+            "readOnly": true,
+            "type": "array"
+          },
+          "range": {
+            "description": "Gives the range of allowed values",
+            "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/schemas/oic.baseresource.properties-schema.json#/definitions/range_number"
+          },
+          "step": {
+            "description": "Gives step value for mediastep",
+            "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/schemas/oic.baseresource.properties-schema.json#/definitions/step_number"
+          },
+          "precision": {
+            "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/schemas/oic.baseresource.properties-schema.json#/definitions/precision"
+          },
+          "uriexp": {
+            "description": "This is URI Expression for mediaaction as defined https://tools.ietf.org/html/rfc6570 specification using query expansion and query continuation which is a compact sequence of characters for describing a range of media action URIs through variable expansion.",
+            "readOnly": true,
+            "maxLength": 256,
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "required": ["mediaaction","uriexp"]
+      }
+    }
+  }
