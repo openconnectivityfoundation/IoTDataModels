@@ -1,0 +1,216 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"title": "Geofence Entity",
+		"version": "2021-12-17",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+	},
+	"schemes": ["http"],
+	"consumes": ["application/json"],
+	"produces": ["application/json"],
+	"paths": {
+		"/GeofenceEntityURI": {
+			"post": {
+				"description": "Contribute entity geofence information.",
+				"parameters": [
+					{"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/parameters/interface-contributor"},
+					{
+						"name": "body",
+						"in": "body",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/schema-contribute"
+						},
+						"x-example": {
+							"eguid1": "99:98:97:96:95:94",
+							"eguid2": "00:11:22:33:44:55",
+							"iswithin": true,
+							"radius": 1.5,
+							"accuracy": 0.5,
+							"confidence": 68
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Success path.",
+						"x-example": {
+							"id": "1",
+							"rt": ["oic.r.location.contributor.geofence"],
+							"if": ["oic.if.baseline", "oic.if.a"],
+							"eguid1": "99:98:97:96:95:94",
+							"eguid2": "00:11:22:33:44:55",
+							"iswithin": true,
+							"radius": 1.5,
+							"accuracy": 0.5,
+							"confidence": 68
+
+						},
+						"schema": {
+							"$ref": "#/definitions/schema-contribute"
+						}
+					}
+				}
+			}
+		},
+		"/GeofenceEntityURI/{id}": {
+			"get": {
+				"description": "Get a specific instance of geofence information.",
+				"parameters": [
+					{"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/parameters/path-id"},
+					{"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/parameters/interface-entity"}
+				],
+				"responses": {
+					"200": {
+						"description": "Success path.",
+						"x-example": {
+							"rt": ["oic.r.location.entity.geofence"],
+							"if": ["oic.if.baseline", "oic.if.s"],
+							"entity1": {
+								"eguid": "99:98:97:96:95:94",
+								"ttl": 0,
+								"aliases": ["Kitchen Sensor"]
+							},
+							"entity2": {
+								"eguid": "00:11:22:33:44:55",
+								"ttl": 0,
+								"aliases": ["Mother", "Mom"]
+							},
+							"iswithin": true,
+							"radius": 1.5,
+							"accuracy": 0.5,
+							"confidence": 68,
+							"timestamp": "2019-08-22T09:19Z"
+						},
+						"schema": {
+							"$ref": "#/definitions/schema-get"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"entity-iswithin": {
+			"description": "Indicates if one entity is within a fenceline of a given radius around another entity.",
+			"type": "boolean"
+		},
+		"entity-radius": {
+			"description": "The radius of the fenceline (meters).",
+			"minimum": 0,
+			"type": "number"
+		},
+		"entity-accuracy": {
+			"description": "The accuracy delta (EG: The fenceline is +/- 2 meters).",
+			"minimum": 0,
+			"type": "number"
+		},
+		"entity-confidence": {
+			"description": "Percentage of certainty that the reported fencing is within the specified accuracy.",
+			"type": "number",
+			"minimum": 0,
+			"maximum": 100
+		},
+		"schema-get": {
+			"properties": {
+				"entity1": {
+					"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-representation"
+				},
+				"entity2": {
+					"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-representation"
+				},
+				"iswithin": {
+					"$ref": "#/definitions/entity-iswithin"
+				},
+				"radius": {
+					"$ref": "#/definitions/entity-radius"
+				},
+				"accuracy": {
+					"$ref": "#/definitions/entity-accuracy"
+				},
+				"confidence": {
+					"$ref": "#/definitions/entity-confidence"
+				},
+				"rt": {
+					"description": "Resource type.",
+					"items": {
+						"enum": ["oic.r.location.entity.geofence"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				},
+				"if": {
+					"description": "The interface set supported by this resource.",
+					"items": {
+						"enum": ["oic.if.baseline", "oic.if.s"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"type": "array"
+				},
+				"timestamp": {
+					"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-timestamp"
+				}
+			},
+			"type": "object"
+		},
+		"schema-contribute": {
+			"properties": {
+				"eguid1": {
+					"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-guid"
+				},
+				"eguid2": {
+					"$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-guid"
+				},
+				"iswithin": {
+					"$ref": "#/definitions/entity-iswithin"
+				},
+				"radius": {
+					"$ref": "#/definitions/entity-radius"
+				},
+				"accuracy": {
+					"$ref": "#/definitions/entity-accuracy"
+				},
+				"confidence": {
+					"$ref": "#/definitions/entity-confidence"
+				},
+				"rt": {
+					"description": "Resource type.",
+					"items": {
+						"enum": ["oic.r.location.contributor.geofence"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				},
+				"if": {
+					"description": "The OCF interface set supported by this resource.",
+					"items": {
+						"enum": ["oic.if.baseline", "oic.if.a"],
+						"type": "string"
+					},
+					"minItems": 1,
+					"readOnly": true,
+					"uniqueItems": true,
+					"type": "array"
+				},
+				"id": {
+					"$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+				}
+			},
+			"type": "object",
+			"required": ["id", "eguid1", "eguid2"]
+		}
+	}
+}

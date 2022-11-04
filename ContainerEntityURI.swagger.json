@@ -1,0 +1,120 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Container Entity",
+    "version": "2021-12-17",
+    "license": {
+      "name": "OCF Data Model License",
+      "url": "https://github.com/openconnectivityfoundation/core/blob/e28a9e0a92e17042ba3e83661e4c0fbce8bdc4ba/LICENSE.md",
+      "x-copyright": "copyright 2021 Open Connectivity Foundation, Inc. All rights reserved."
+    },
+    "termsOfService": "https://openconnectivityfoundation.github.io/core/DISCLAIMER.md"
+  },
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/ContainerEntityURI" : {
+      "get": {
+        "description": "A Container Entity is an location services entity that contains container information.\nContainer information is a boolean on whether an entity is inside or outside a container.",
+        "parameters": [
+          {"$ref": "#/parameters/interface-all"}
+        ],
+        "responses": {
+          "200": {
+            "description" : "",
+            "x-example": {
+              "rt":         ["oic.r.location.entity.container"],
+              "entity": {"entityid":"00:11:22:33","entitydescription":"Mom"},
+              "containerid": "MyContainer",
+              "confidence": 80,
+              "incontainer": true,
+              "timestamp":  "2015-11-05T14:30:15Z"
+            },
+            "schema": { "$ref": "#/definitions/ContainerEntity" }
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "interface-all" : {
+      "in" : "query",
+      "name" : "if",
+      "type" : "string",
+      "enum" : ["oic.if.r","oic.if.baseline"]
+    }
+  },
+  "definitions": {
+    "ContainerEntity" : {
+      "properties": {
+        "rt" : {
+          "description": "Resource Type",
+          "items": {
+            "enum": ["oic.r.entity.container"],
+            "type": "string",
+            "maxLength": 64
+          },
+          "minItems": 1,
+          "readOnly": true,
+          "uniqueItems": true,
+          "type": "array"
+        },
+        "containerid" :  {
+          "description": "The current container",
+          "readOnly": true,
+          "type": "string"
+        },
+        "confidence" : {
+          "description": "The confidence level of the reading being correct (0 - 100)",
+          "minimum": 0,
+          "readOnly": true,
+          "type": "number"
+        },
+        "entity" :  {
+          "properties": {
+            "entitydescription": {
+              "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-description"
+            },
+            "entityid": {
+              "$ref": "https://openconnectivityfoundation.github.io/IoTDataModels/EntityResURI.swagger.json#/definitions/entity-id"
+            }
+          },
+          "type": "object"
+        },
+        "incontainer" :  {
+          "description": "Indicates whether an entity is inside the container",
+          "readOnly": true,
+          "type": "boolean"
+        },
+        "timestamp" :  {
+          "description": "An RFC3339 formated time indicating when the data was observed (e.g.: 2016-02-15T09:19Z)",
+          "format": "date-time",
+          "readOnly": true,
+          "type": "string"
+        },
+        "n": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/n"
+        },
+        "id": {
+          "$ref": "https://openconnectivityfoundation.github.io/core/schemas/oic.common.properties.core-schema.json#/definitions/id"
+        },
+        "if" : {
+          "description": "The interface set supported by this resource",
+          "items": {
+            "enum": [
+              "oic.if.baseline",
+              "oic.if.r"
+            ],
+            "type": "string",
+            "maxLength": 64
+          },
+          "minItems": 1,
+          "readOnly": true,
+          "type": "array"
+        }
+      },
+      "type" : "object"
+    }
+  }
+}
